@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for mess in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{mess}}</strong> 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    <form method="POST">
+
+
+        {{form.hidden_tag()}}
+        {{form.v_no.label()}}{{form.v_no()}}<br>
+        {{form.doe.label()}}{{form.doe()}}<br>
+        {{form.ac()}}{{form.ac.label()}}<br>
+        {{form.submit()}}
+    </form>
+{% endblock %}

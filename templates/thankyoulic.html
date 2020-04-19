@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron" style="text-align: center;">
+        <p>LLR ID: {{llr_id}}</p>
+        <p>Tested By: {{e_id}}</p>
+        {% if test %}
+            <p>Congratulations!You Passed The Test</p>
+        {% else %}
+            <p>You Failed The Test. Better Luck Next Time</p>
+        {% endif %}
+
+
+        </div>
+{% endblock %}

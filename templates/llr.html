@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST">
+        {% for mess in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{mess}}</strong> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        
+            
+        {% endfor %}
+        {{form.hidden_tag()}}
+        {{form.name.label()}} {{form.name()}}<br>
+        {{form.f_name.label()}} {{form.f_name()}}<br>
+        {{form.dob.label()}} {{form.dob()}}<br>
+        {{form.city.label()}} {{form.city()}}<br>
+        {{form.submit()}}
+    </form>
+
+    <div class="jumbotron" >
+      <p> <h3>The Available Cities:</h3></p>
+      {% for cit in cities %}  
+        <div style="padding-left: 70px;">
+          <strong>{{cit}}</strong> 
+          <br>
+        </div>
+        {% endfor %}
+        
+    </div>
+{% endblock %}

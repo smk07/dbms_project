@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron">
+        {% for mess in get_flashed_messages() %}
+            {{mess}}
+        {% endfor %}
+        hahhahhahaha
+    </div>
+
+
+{% endblock %}

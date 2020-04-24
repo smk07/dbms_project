@@ -1,0 +1,193 @@
+CREATING TABLES:
+
+LLR_REG:
+CREATE TABLE LLR_REG(LLR_ID CHAR(7),NAME VARCHAR(30),DOB DATE,FATHER_NAME VARCHAR(30),CITY VARCHAR(15),PRIMARY KEY(LLR_ID));
+
+RTO_LOC:
+CREATE TABLE RTO_LOC(RTO_ID CHAR(8),CITY VARCHAR(15),PRIMARY KEY(RTO_ID));
+
+RTO_EMPLOYEES:
+CREATE TABLE RTO_EMP(E_ID CHAR(4),NAME VARCHAR(30),CITY VARCHAR(15),RTO_ID CHAR(5),DOJ DATE,TESTS_COND INT, PRIMARY KEY(E_ID),FOREIGN KEY(RTO_ID) REFERENCES RTO_LOC);
+
+LIC_GRA:
+CREATE TABLE LIC_GRA(LLR_ID CHAR(7),TEST BOOL,E_ID CHAR(4),DOT DATE,PRIMARY KEY(LLR_ID),FOREIGN KEY(LLR_ID) REFERENCES LLR_REG,FOREIGN KEY(E_ID) REFERENCES RTO_EMP);
+
+LIC_REG:
+CREATE TABLE LIC_REG(O_NAME VARCHAR(30),DOB DATE,FATHER_NAME VARCHAR(30), CITY VARCHAR(15),L_ID CHAR(7),LLR_ID VARCHAR(7),PRIMARY KEY(L_ID),FOREIGN KEY(LLR_ID) REFERENCES LLR_REG(LLR_ID));
+
+VEH_REG :
+CREATE TABLE VEH_REG(V_NO CHAR(8),O_NAME VARCHAR(30),CITY VARCHAR(15),RTO_ID CHAR(5),DOR DATE,PHN_NO CHARACTER(10),EX_DATE DATE,L_ID CHAR(7),PRIMARY KEY(V_NO),FOREIGN KEY(L_ID) REFERENCES LIC_REG(L_ID),FOREIGN KEY (RTO_ID) REFERENCES RTO_LOC(RTO_ID));
+
+FITNESS CERT:
+CREATE TABLE FIT_CERT(V_NO CHAR(8),ACCEPTION BOOL,F_ID CHAR(3),DOE DATE,PRIMARY KEY(F_ID),FOREIGN KEY (V_NO) REFERENCES VEH_REG ON DELETE CASCADE);
+
+
+
+
+###################################################################################################################################################################################################################################################################################################
+INITIAL INSERT STATEMENTS:
+
+TABLE: RTO_LOC
+QUERIES:
+insert into rto_loc values('CHEN7701','CHENNAI');
+insert into rto_loc values('COIM7701','COIMBATORE');
+insert into rto_loc values('MADU7701','MADURAI');
+insert into rto_loc values('TRIC7701','TRICHY');
+insert into rto_loc values('TIRU7701','TIRUPPUR');
+insert into rto_loc values('SALE7701','SALEM');
+insert into rto_loc values('EROD7701','ERODE');
+insert into rto_loc values('TIRU2479','TIRUNELVELI');
+Sinsert into rto_loc values('VELL7701','VELLORE');
+insert into rto_loc values('THOO7701','THOOTHUKUDI');
+insert into rto_loc values('DIND7701','DINDIGUL');
+insert into rto_loc values('THAN7701','THANJAVUR');
+insert into rto_loc values('KARU7701','KARUR');
+insert into rto_loc values('HOSU7701','HOSUR');
+insert into rto_loc values('POLL7701','POLLACHI');
+insert into rto_loc values('CUDD7701','CUDDALORE');
+insert into rto_loc values('NAGE7701','NAGERCOIL');
+insert into rto_loc values('NEYV7701','NEYVELI');
+insert into rto_loc values('PUDH7701','PUDHUKOTTAI');
+insert into rto_loc values('SIVA7701','SIVAKASI');
+
+
+
+TABLE: RTO_EMP
+QUERIES:
+insert into rto_emp values('DOB7','DOBBY','CHENNAI','CHEN7701','02-07-2019',0);
+insert into rto_emp values('HAR7','HARRY POTTER','COIMBATORE','COIM7701','07-07-2019',0);
+insert into rto_emp values('HER7','HERMIONE','MADURAI','MADU7701','04-04-2019',0);
+insert into rto_emp values('RON7','RON WEASLEY','TRICHY','TRIC7701','02-12-2019',0);
+insert into rto_emp values('LIL7','LILY POTTER','TIRUPPUR','TIRU7701','09-12-2019',0);
+insert into rto_emp values('JAM7','JAMES POTTER','SALEM','SALE7701','31-12-2019',0);
+insert into rto_emp values('SEV7','SEVERUS SNAPE','ERODE','EROD7701','18-02-2019',0);
+insert into rto_emp values('FRE7','FRED WEASLEY','TIRUNELVELI','TIRU2479','18-01-2019',0);
+insert into rto_emp values('GEO7','GEORGE WEASLEY','VELLORE','VELL7701','24-10-2019',0);
+insert into rto_emp values('CHO7','CHO CHANG','THOOTHUKUDI','THOO7701','27-07-2019',0);
+insert into rto_emp values('GIN7','GINNY WEASLEY','DINDIGUL','DIND7701','02-02-2019',0);
+insert into rto_emp values('SIR7','SIRIUS BLACK','THANJAVUR','THAN7701','16-06-2019',0);
+insert into rto_emp values('REM7','REMUS LUPIN','KARUR','KARU7701','19-10-2019',0);
+insert into rto_emp values('TON7','TONKS','HOSUR','HOSU7701','15-4-2019',0);
+insert into rto_emp values('CHA7','CHARLIE WEASLEY','POLLACHI','POLL7701','25-2-2019',0);
+insert into rto_emp values('MIN7','MINERVA MCGONAGALL','CUDDALORE','CUDD7701','15-10-2019',0);
+insert into rto_emp values('FLE7','FLEUR DELECOR','NAGERCOIL','NAGE7701','17-09-2019',0);
+insert into rto_emp values('NEV7','NEVILLE LONGBOTTOM','NEYVELI','NEYV7701','20-01-2019',0);
+insert into rto_emp values('AD22','ALBUS DUMBLEDORE','PUDHUKOTTAI','PUDH7701','22-04-2019',0);
+insert into rto_emp values('TMR7','TOM MARVALO RIDDLE','SIVAKASI','SIVA7701','03-04-2019',0);
+insert into rto_emp values('CED7','CEDRIC DIGGORY','CHENNAI','CHEN7701','05-04-2019',0);
+insert into rto_emp values('KRU7','KRUM VICTOR','COIMBATORE','COIM7701','11-11-2019',0);
+insert into rto_emp values('DEA7','DEAN SEAMUS','SALEM','SALE7701','20-04-2019',0);
+
+
+###################################################################################################################################################################################################################################################################################################
+PROCEDURE For Trigger1:
+CREATE OR REPLACE FUNCTION fitness()
+	RETURNS trigger AS
+$$
+BEGIN
+	IF new.acception != 't' THEN
+		delete from veh_reg where v_no=new.v_no;
+		RAISE NOTICE 'DELETED';
+	ELSIF new.acception !='f' THEN
+		update veh_reg set ex_date=new.doe where v_no=new.v_no;
+		RAISE NOTICE 'UPDATED';
+	END IF;
+	RETURN NULL;
+END;
+$$ 
+LANGUAGE 'plpgsql';
+
+TRIGGER1:
+CREATE TRIGGER fit
+	AFTER INSERT
+	ON fit_cert
+	FOR EACH ROW
+	EXECUTE PROCEDURE fitness();
+
+
+
+PROCEDURE For Trigger2:
+CREATE OR REPLACE FUNCTION test_conducted()
+	RETURNS TRIGGER AS
+$$
+DECLARE 
+	count INTEGER;
+	empid rto_emp%ROWTYPE;
+	
+BEGIN
+	select * into empid from rto_emp where e_id=new.e_id;
+ 	count:= empid.tests_cond + 1;
+	update rto_emp set tests_cond=count where e_id=new.e_id;
+	raise notice 'UPDATED COUNT';
+	return NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+TRIGGER2:
+CREATE TRIGGER testcond
+	BEFORE INSERT
+	ON lic_gra
+	FOR EACH ROW
+	EXECUTE PROCEDURE test_conducted();	
+
+
+PROCEDURE for Trigger3:
+CREATE OR REPLACE FUNCTION license()
+	RETURNS trigger AS
+$$
+DECLARE
+	llrreg llr_reg%ROWTYPE;
+BEGIN
+	IF new.test != 'f' THEN
+		select * into llrreg from llr_reg where llr_id=new.llr_id LIMIT 1;
+		insert into lic_Reg values(llrreg.name,llrreg.dob,llrreg.father_name,llrreg.city,NEW.llr_id,NEW.llr_id);
+		RAISE NOTICE 'INSERTED';
+	ELSIF new.test !='t' THEN
+		RAISE NOTICE 'SORRY,You Failed The Test';
+	END IF;
+	RETURN NULL;
+END;
+$$ 
+LANGUAGE 'plpgsql';
+
+TRIGGER3:
+CREATE TRIGGER fit
+	AFTER INSERT
+	ON lic_gra
+	FOR EACH ROW
+	EXECUTE PROCEDURE license();
+
+
+
+
+cursors:
+
+create or replace function rto_loc()
+	returns text as
+$$
+declare 
+	cities text default '';
+	rtocity CURSOR for select * from rto_loc;
+	cty RECORD;
+begin
+open rtocity;
+loop
+	fetch rtocity into cty;
+	exit when not found;
+	cities :=cities || ',' ||cty.city;
+end loop;
+close rtocity;
+return cities;
+end; 
+$$
+language plpgsql;
+
+
+
+
+VIEWS:
+create view search(v_no,o_name,city,rto_id,dor,ph_no,ex_date,lid,f_name,llr_id,dob) as 
+		select v_no,veh_reg.o_name,veh_reg.city,rto_id,dor,ph_no,ex_date,veh_reg.l_id,father_name,llr_id,dob 
+		from veh_reg,lic_reg where veh_reg.l_id=lic_reg.l_id;
+
